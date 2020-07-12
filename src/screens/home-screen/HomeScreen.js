@@ -4,6 +4,7 @@ import Header from './components/Header';
 import AppStateContext from '../../AppStateContext';
 import {StackActions} from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
+import {FAB} from 'react-native-paper';
 
 class HomeScreen extends Component {
   constructor(props) {
@@ -29,7 +30,25 @@ class HomeScreen extends Component {
     return (
       <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
         <StatusBar backgroundColor="#fff" barStyle="dark-content" />
-        <Header navigation={this.props.navigation} />
+        <View style={{flex: 1}}>
+          <Header navigation={this.props.navigation} />
+          <FAB
+            style={{
+              position: 'absolute',
+              margin: 16,
+              alignSelf: 'center',
+              bottom: 0,
+            }}
+            color="#fff"
+            icon="plus"
+            theme={{
+              colors: {
+                accent: '#3A3A3A',
+              },
+            }}
+            onPress={() => this.props.navigation.navigate('AddNote')}
+          />
+        </View>
       </SafeAreaView>
     );
   }

@@ -4,6 +4,7 @@ import {AppState} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import MainStack from './navigation/MainNavigator';
 import AppStateContext from './AppStateContext';
+import {Provider} from 'react-native-paper';
 
 export default function App() {
   const [appState, setAppState] = useState(AppState.currentState);
@@ -25,9 +26,11 @@ export default function App() {
 
   return (
     <AppStateContext.Provider value={appState}>
-      <NavigationContainer>
-        <MainStack />
-      </NavigationContainer>
+      <Provider>
+        <NavigationContainer>
+          <MainStack />
+        </NavigationContainer>
+      </Provider>
     </AppStateContext.Provider>
   );
 }
