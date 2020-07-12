@@ -5,6 +5,7 @@ import AppStateContext from '../../AppStateContext';
 import {StackActions} from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {FAB} from 'react-native-paper';
+import RenderNotes from './components/RenderNotes';
 
 class HomeScreen extends Component {
   constructor(props) {
@@ -12,7 +13,58 @@ class HomeScreen extends Component {
 
     this.state = {
       pin: null,
+      notes: [],
     };
+  }
+
+  async componentDidMount() {
+    var notes = [
+      {
+        title: 'Heath',
+        content:
+          'It is a long established fact that a reader will be distracted by the readabl',
+        date: 'June 5th, 2020',
+        pinned: false,
+      },
+      {
+        title: 'Get a head..',
+        content: 'There are many variations of passages',
+        date: 'June 5th, 2020',
+        pinned: false,
+      },
+      {
+        title: 'Jet a head..',
+        content:
+          'There are many variations of passages akdhfajsidf jakdjsfk jdjsakf jksdfj jka dkfj ',
+        date: 'June 5th, 2020',
+        pinned: false,
+      },
+      {
+        title: 'Lamao noob',
+        content: 'There are many variations of passages adf a akdfd',
+        date: 'June 5th, 2020',
+        pinned: false,
+      },
+      {
+        title: 'Loll Bro',
+        content: 'There are many variations',
+        date: 'June 5th, 2020',
+        pinned: false,
+      },
+      {
+        title: 'Lajdj jak df',
+        content:
+          'There are many variations of passages ajdfa jfad fjasf djfkaj asf asjasf jfkjfklas fjk fjadkj akfjskj aklf fk d',
+        date: 'June 5th, 2020',
+        pinned: false,
+      },
+    ];
+
+    await AsyncStorage.setItem('@user_notes', JSON.stringify(notes));
+    // var notes = await AsyncStorage.getItem('@user_notes');
+    var notes = JSON.parse(await AsyncStorage.getItem('@user_notes'));
+
+    this.setState({notes});
   }
 
   static contextType = AppStateContext;
@@ -31,7 +83,11 @@ class HomeScreen extends Component {
       <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
         <StatusBar backgroundColor="#fff" barStyle="dark-content" />
         <View style={{flex: 1}}>
-          <Header navigation={this.props.navigation} />
+          <Header
+            navigation={this.props.navigation}
+            notes={this.state.notes.length}
+          />
+          <RenderNotes notes={this.state.notes} />
           <FAB
             style={{
               position: 'absolute',

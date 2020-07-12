@@ -10,7 +10,7 @@ import AddNotes from '../screens/add-notes-screen';
 
 const Stack = createStackNavigator();
 
-function MainStack(props) {
+function MainStack() {
   return (
     <Stack.Navigator initialRouteName="SplashScreen" headerMode="none">
       <Stack.Screen name="Auth" component={Auth} />

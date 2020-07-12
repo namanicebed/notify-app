@@ -34,7 +34,7 @@ class Header extends Component {
               fontSize: 12,
               fontFamily: 'Poppins-Regular',
             }}>
-            8 Notes
+            {this.props.notes} Notes
           </Text>
         </View>
         <Ionicons name="search" color="#1D1D1D" size={25} />

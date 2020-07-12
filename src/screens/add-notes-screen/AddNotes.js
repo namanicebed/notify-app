@@ -31,7 +31,7 @@ class AddNotes extends Component {
           <View
             style={{
               marginTop: 20,
-              height: 2,
+              height: 1,
               width: '100%',
               backgroundColor: '#e8e8e8',
             }}
