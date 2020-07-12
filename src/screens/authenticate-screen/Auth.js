@@ -1,25 +1,85 @@
-import React, {Component} from 'react';
-import {Text, View, SafeAreaView, TouchableOpacity, Image} from 'react-native';
+import React, {Component,Suspense} from 'react';
+import {
+  Text,
+  View,
+  SafeAreaView,
+  TouchableOpacity,
+  Image,
+  Platform,
+} from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
 import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-community/async-storage';
+import FingerprintScanner from 'react-native-fingerprint-scanner';
 
 class Auth extends Component {
   constructor(props) {
     super(props);
     this.state = {
       text: '',
+      pin: false,
       verify: false,
       verified: false,
     };
   }
   async componentDidMount() {
     this.pin = await AsyncStorage.getItem('@user_pin');
-    this.fingerprint = await AsyncStorage.getItem('@user_fingerprint');
+    const fingerprint = await AsyncStorage.getItem('@user_fingerprint');
+    // if (fingerprint) {
+    //   if (Platform.OS == 'android') {
+    //     this.authLegacy();
+    //   }
+    // }
   }
+  requiresLegacyAuthentication() {
+    return Platform.Version < 23;
+  }
+
+  componentWillUnmount = () => {
+    FingerprintScanner.release();
+  };
+
+  authCurrent() {
+    FingerprintScanner.authenticate({
+      title: 'Authenticate your Biometrics',
+    }).then(() => {
+      this.setState({verified: true});
+    });
+  }
+
+  authLegacy() {
+    FingerprintScanner.authenticate({
+      onAttempt: this.handleAuthenticationAttemptedLegacy,
+    })
+      .then(async () => {
+        this.setState({verified: true});
+        Toast.show('Authenticated');
+        this.props.navigation.navigate('Home');
+        setTimeout(() => {
+          this.setState({isVisible: false});
+          this.props.navigation.pop();
+        }, 700);
+      })
+      .catch((error) => {
+        this.setState({
+          errorMessageLegacy: error.message,
+          biometricLegacy: error.biometric,
+          error: true,
+        });
+        setTimeout(() => {
+          this.setState({isVisible: false});
+          this.props.navigation.pop();
+        }, 700);
+      });
+  }
+
+  handleAuthenticationAttemptedLegacy = (error) => {
+    this.setState({errorMessageLegacy: error.message, error: true});
+  };
   render() {
+    // this.pin = await AsyncStorage.getItem('@user_pin');
     return (
       <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
         <View style={{flex: 1}}>

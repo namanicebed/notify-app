@@ -19,7 +19,8 @@ class HomeScreen extends Component {
     setTimeout(async () => {
       if (this.context == 'background' || this.context == 'inactive') {
         const pin = await AsyncStorage.getItem('@user_pin');
-        pin
+        const fingerprint = await AsyncStorage.getItem('@user_fingerprint');
+        pin || fingerprint
           ? this.props.navigation.dispatch(StackActions.replace('Auth'))
           : null;
       }
