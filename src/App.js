@@ -3,8 +3,7 @@ import React, {useState, createContext, useEffect} from 'react';
 import {AppState} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import MainStack from './navigation/MainNavigator';
-
-const AppStateContext = createContext('active');
+import AppStateContext from './AppStateContext';
 
 export default function App() {
   const [appState, setAppState] = useState(AppState.currentState);
@@ -15,12 +14,13 @@ export default function App() {
     };
   }, []);
 
-  useEffect(() => {
-    console.log(appState);
-  });
+  // useEffect(() => {
+  //   console.log(appState);
+  // });
 
   const handleAppStateChange = (state) => {
     setAppState(state);
+    // navigation.dispatch(StackActions.replace('Auth'));
   };
 
   return (

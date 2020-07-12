@@ -9,7 +9,7 @@ import Auth from '../screens/authenticate-screen/Auth';
 
 const Stack = createStackNavigator();
 
-function MainStack() {
+function MainStack(props) {
   return (
     <Stack.Navigator initialRouteName="SplashScreen" headerMode="none">
       <Stack.Screen name="Auth" component={Auth} />

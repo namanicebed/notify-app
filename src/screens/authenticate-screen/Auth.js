@@ -17,6 +17,7 @@ class Auth extends Component {
   }
   async componentDidMount() {
     this.pin = await AsyncStorage.getItem('@user_pin');
+    this.fingerprint = await AsyncStorage.getItem('@user_fingerprint');
   }
   render() {
     return (
