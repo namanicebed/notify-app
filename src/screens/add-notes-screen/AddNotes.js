@@ -2,11 +2,55 @@ import React, {Component} from 'react';
 import {Text, View, SafeAreaView, TextInput, Dimensions} from 'react-native';
 import Header from './components/Header';
 import moment from 'moment';
+import Modal from './Modal';
 class AddNotes extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: props.route
+        ? props.route.params.item
+          ? props.route.params.item.title
+          : ''
+        : '',
+      content: props.route
+        ? props.route.params.item
+          ? props.route.params.item.content
+          : ''
+        : '',
+      isVisible: false,
+    };
+  }
+
   render() {
     return (
       <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
-        <Header navigation={this.props.navigation} />
+        <Header
+          edited={
+            this.props.route.params
+              ? this.props.route.params.item
+                ? true
+                : false
+              : false
+          }
+          title={this.state.title}
+          content={this.state.content}
+          id={
+            this.props.route
+              ? this.props.route.params.item
+                ? this.props.route.params.item.id
+                : null
+              : null
+          }
+          pinned={
+            this.props.route
+              ? this.props.route.params.item
+                ? this.props.route.params.item.pinned
+                : false
+              : false
+          }
+          modalCallback={(isVisible) => this.setState({isVisible})}
+          notes={this.props.route.params.notes}
+        />
         <View style={{flex: 1, marginTop: 30, marginHorizontal: 30}}>
           <Text
             style={{
@@ -15,7 +59,11 @@ class AddNotes extends Component {
               opacity: 0.4,
               fontFamily: 'Poppins-Regular',
             }}>
-            {moment().format('ll')}
+            {this.props.route.params
+              ? this.props.route.params.item
+                ? this.props.route.params.item.date
+                : moment().format('ll')
+              : moment().format('ll')}
           </Text>
           <TextInput
             style={{
@@ -24,6 +72,8 @@ class AddNotes extends Component {
               marginTop: 16,
               color: '#1D1D1D',
             }}
+            value={this.state.title}
+            onChangeText={(title) => this.setState({title})}
             placeholder="Title here..."
             selectionColor="#1D1D1D"
             placeholderTextColor="rgba(29, 29, 29, 0.3)"
@@ -44,11 +94,20 @@ class AddNotes extends Component {
               color: '#1D1D1D',
             }}
             multiline
+            value={this.state.content}
+            onChangeText={(content) => this.setState({content})}
             placeholderTextColor="#707070"
             placeholder="Content"
             selectionColor="#1D1D1D"
           />
         </View>
+        <Modal
+          isVisible={this.state.isVisible}
+          modalCallback={(isVisible) => this.setState({isVisible})}
+          notes={this.props.route.params.notes}
+          title={this.state.title}
+          content={this.state.content}
+        />
       </SafeAreaView>
     );
   }

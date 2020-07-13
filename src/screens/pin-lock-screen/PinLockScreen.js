@@ -20,7 +20,6 @@ class PinLockScreen extends Component {
   }
 
   render() {
-    console.log(this.state);
     return (
       <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
         <View style={{flex: 1}}>

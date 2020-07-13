@@ -1,25 +1,71 @@
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import {Text, View} from 'react-native';
-import Feather from 'react-native-vector-icons/Feather';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AsyncStorage from '@react-native-community/async-storage';
+import Toast from 'react-native-simple-toast';
+import {useNavigation} from '@react-navigation/native';
+import moment from 'moment';
 
-class Header extends Component {
-  render() {
-    return (
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginHorizontal: 20,
-        }}>
-        <MaterialIcons
-          name="arrow-back"
-          color="#1D1D1D"
-          size={25}
-          onPress={() => this.props.navigation.pop()}
-        />
+export default Header = (props) => {
+  const navigation = useNavigation();
+  const [pinned, setPin] = useState(props.pinned);
+  const saveNotes = async () => {
+    props.notes.push({
+      id: props.notes.length + 1,
+      title: props.title,
+      content: props.content,
+      pinned: false,
+      date: moment().format('ll'),
+    });
+    console.log(props.notes);
+    await AsyncStorage.setItem('@user_notes', JSON.stringify(props.notes));
+    props.modalCallback(false);
+    Toast.show('Note Saved');
+    navigation.pop();
+  };
+  return (
+    <View
+      style={{
+        marginTop: 10,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginHorizontal: 20,
+      }}>
+      <MaterialIcons
+        name="arrow-back"
+        color="#1D1D1D"
+        size={25}
+        onPress={() => {
+          props.title != '' || props.content != ''
+            ? props.edited
+              ? navigation.pop() //logic to save and pop
+              : props.modalCallback(true)
+            : navigation.pop();
+        }}
+      />
+      {props.edited ? (
+        <View style={{alignItems: 'center', flexDirection: 'row'}}>
+          <AntDesign
+            name={pinned ? 'pushpin' : 'pushpino'}
+            onPress={() => {
+              setPin(!pinned);
+              pinned ? Toast.show('Note Un Pinned') : Toast.show('Note Pinned');
+            }}
+            color="#1D1D1D"
+            size={23}
+            style={{marginRight: 20}}
+          />
+          <AntDesign
+            name="delete"
+            color="#1D1D1D"
+            size={23}
+            // style={{marginRight: 20}}
+          />
+        </View>
+      ) : (
         <View style={{alignItems: 'center', flexDirection: 'row'}}>
           <Ionicons
             name="md-arrow-undo-outline"
@@ -33,10 +79,14 @@ class Header extends Component {
             size={23}
             style={{marginRight: 20}}
           />
-          <MaterialIcons name="done" color="#1D1D1D" size={25} />
+          <MaterialIcons
+            name="done"
+            color="#1D1D1D"
+            size={25}
+            onPress={saveNotes}
+          />
         </View>
-      </View>
-    );
-  }
-}
-export default Header;
+      )}
+    </View>
+  );
+};
