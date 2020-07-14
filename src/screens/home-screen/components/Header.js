@@ -3,17 +3,14 @@ import {Text, View} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
+
+import styles from './styles';
+
 const Header = (props) => {
   const navigation = useNavigation();
 
   return (
-    <View
-      style={{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginHorizontal: 20,
-      }}>
+    <View style={styles.headerStyle.mainView}>
       <Feather
         name="menu"
         color="#1D1D1D"
@@ -21,20 +18,8 @@ const Header = (props) => {
         onPress={() => props.navigation.openDrawer()}
       />
       <View style={{alignItems: 'center'}}>
-        <Text
-          style={{
-            color: '#1D1D1D',
-            fontSize: 18,
-            fontFamily: 'Poppins-Medium',
-          }}>
-          Notes
-        </Text>
-        <Text
-          style={{
-            color: '#1D1D1D',
-            fontSize: 12,
-            fontFamily: 'Poppins-Regular',
-          }}>
+        <Text style={styles.headerStyle.textStyle}>Notes</Text>
+        <Text style={[styles.headerStyle.textStyle, {fontSize: 12}]}>
           {props.notes} Notes
         </Text>
       </View>

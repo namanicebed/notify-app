@@ -21,7 +21,7 @@ class PinLockScreen extends Component {
 
   render() {
     return (
-      <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+      <SafeAreaView style={styles.safeAreaStyle}>
         <View style={{flex: 1}}>
           <MaterialIcons
             name="arrow-back"
@@ -101,14 +101,6 @@ class PinLockScreen extends Component {
   }
 
   dot(fill) {
-    // var color;
-    // if (this.state.verified && this.state.verify) {
-    //   color = 'green';
-    // } else if (!this.state.verified && this.state.verify) {
-    //   color = 'red';
-    // } else {
-    //   color = '#404040';
-    // }
     return (
       <View
         style={{

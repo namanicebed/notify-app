@@ -1,7 +1,8 @@
 import {StyleSheet, Dimensions, Platform} from 'react-native';
 const {height, width} = Dimensions.get('window');
 
-module.exports = StyleSheet.create({
+export default styles = {
+  safeAreaStyle: {flex: 1, backgroundColor: '#fff'},
   container: {
     marginTop: 20,
     marginLeft: 30,
@@ -15,7 +16,7 @@ module.exports = StyleSheet.create({
   number: {
     fontSize: 25,
     textAlign: 'center',
-    fontFamily:'Poppins-Regular'
+    fontFamily: 'Poppins-Regular',
   },
   backspace: {
     flex: 1,
@@ -26,4 +27,4 @@ module.exports = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
-});
+};

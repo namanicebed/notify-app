@@ -15,13 +15,8 @@ export default function App() {
     };
   }, []);
 
-  // useEffect(() => {
-  //   console.log(appState);
-  // });
-
   const handleAppStateChange = (state) => {
     setAppState(state);
-    // navigation.dispatch(StackActions.replace('Auth'));
   };
 
   return (
