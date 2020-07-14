@@ -21,13 +21,21 @@ class RenderNotes extends Component {
     // );
     return (
       <FlatList
-        // itemDimension={130}
         numColumns={2}
         style={{flex: 1, marginTop: 10}}
         data={this.props.notes}
         spacing={8}
         renderItem={({item, index}) => {
-          return <ListItem data={item} notes={this.props.notes} />;
+          // console.log(this.props.notes);
+          if (item)
+            return (
+              <ListItem
+                data={item}
+                notes={this.props.notes}
+                editable={this.props.editable}
+              />
+            );
+          else return <View />;
         }}
         // extraData={this.props.data}
         keyExtractor={(item, index) => index.toString()}

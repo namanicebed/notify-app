@@ -13,6 +13,7 @@ export default HomeScreen = ({navigation}) => {
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
       var notes = JSON.parse(await AsyncStorage.getItem('@user_notes'));
+      console.log(notes);
       notes ? setNotes(notes) : null;
     });
     return unsubscribe;
@@ -34,8 +35,26 @@ export default HomeScreen = ({navigation}) => {
     <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
       <StatusBar backgroundColor="#fff" barStyle="dark-content" />
       <View style={{flex: 1}}>
-        <Header navigation={navigation} notes={notes.length} />
-        <RenderNotes notes={notes.reverse()} />
+        <Header navigation={navigation} notes={notes.length} data={notes} />
+        {notes.length == 0 ? (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text
+              style={{
+                fontFamily: 'Poppins-Medium',
+                color: 'rgba(0,0,0,0.6)',
+                fontSize: 15,
+              }}>
+              Create your first note by clicking + button
+            </Text>
+          </View>
+        ) : (
+          <RenderNotes notes={notes.reverse()} editable />
+        )}
         <FAB
           style={{
             position: 'absolute',

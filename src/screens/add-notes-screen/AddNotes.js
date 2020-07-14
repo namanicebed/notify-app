@@ -18,6 +18,7 @@ class AddNotes extends Component {
           : ''
         : '',
       isVisible: false,
+      deleteModal: false,
     };
   }
 
@@ -32,15 +33,9 @@ class AddNotes extends Component {
                 : false
               : false
           }
+          item={this.props.route ? this.props.route.params.item : null}
           title={this.state.title}
           content={this.state.content}
-          id={
-            this.props.route
-              ? this.props.route.params.item
-                ? this.props.route.params.item.id
-                : null
-              : null
-          }
           pinned={
             this.props.route
               ? this.props.route.params.item
@@ -48,7 +43,9 @@ class AddNotes extends Component {
                 : false
               : false
           }
-          modalCallback={(isVisible) => this.setState({isVisible})}
+          modalCallback={(isVisible, deleteModal) =>
+            this.setState({isVisible, deleteModal})
+          }
           notes={this.props.route.params.notes}
         />
         <View style={{flex: 1, marginTop: 30, marginHorizontal: 30}}>
@@ -107,6 +104,8 @@ class AddNotes extends Component {
           notes={this.props.route.params.notes}
           title={this.state.title}
           content={this.state.content}
+          deleteModal={this.state.deleteModal}
+          item={this.props.route ? this.props.route.params.item : null}
         />
       </SafeAreaView>
     );

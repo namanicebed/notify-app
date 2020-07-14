@@ -7,6 +7,7 @@ import AddPin from '../screens/pin-lock-screen';
 import AddFingerprint from '../screens/fingerprint-screen';
 import Auth from '../screens/authenticate-screen';
 import AddNotes from '../screens/add-notes-screen';
+import SearchScreen from '../screens/search-screen';
 
 const Stack = createStackNavigator();
 
@@ -19,6 +20,7 @@ function MainStack() {
       <Stack.Screen name="SplashScreen" component={SplashScreen} />
       <Stack.Screen name="AddPin" component={AddPin} />
       <Stack.Screen name="AddFingerprint" component={AddFingerprint} />
+      <Stack.Screen name="SearchScreen" component={SearchScreen} />
     </Stack.Navigator>
   );
 }

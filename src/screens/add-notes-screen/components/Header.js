@@ -12,34 +12,38 @@ export default Header = (props) => {
   const navigation = useNavigation();
   const [pinned, setPin] = useState(props.pinned);
 
-  const updateAsyncStorage = async () => {
-    await AsyncStorage.setItem('@user_notes', JSON.stringify(props.notes));
-    props.modalCallback(false);
+  const updateAsyncStorage = async (notes) => {
+    await AsyncStorage.setItem('@user_notes', JSON.stringify(notes));
+    props.modalCallback(false, false);
     Toast.show('Note Saved');
     navigation.pop();
   };
 
   const saveNotes = async () => {
-    props.notes.push({
-      id: props.notes.length + 1,
+    const notes = props.notes.reverse();
+    notes.push({
       title: props.title,
       content: props.content,
       pinned: false,
       date: moment().format('ll'),
     });
-    updateAsyncStorage();
+    updateAsyncStorage(notes);
   };
 
   const saveAndPop = async () => {
     var editedNote = {
-      ...props.notes[props.id - 1],
+      ...props.notes[props.notes.indexOf(props.item)],
       title: props.title,
       content: props.content,
     };
-    props.notes[props.id - 1] = editedNote;
-    console.log(props.notes);
-    updateAsyncStorage();
+    const notes = props.notes.reverse();
+    notes[props.notes.indexOf(props.item)] = editedNote;
+    updateAsyncStorage(notes);
   };
+
+  // const deleteNote = () => {
+
+  // };
   return (
     <View
       style={{
@@ -57,7 +61,7 @@ export default Header = (props) => {
           props.title != '' || props.content != ''
             ? props.edited
               ? saveAndPop() //logic to save and pop
-              : props.modalCallback(true)
+              : props.modalCallback(true, false)
             : navigation.pop();
         }}
       />
@@ -67,12 +71,10 @@ export default Header = (props) => {
             name={pinned ? 'pushpin' : 'pushpino'}
             onPress={async () => {
               setPin(!pinned);
-              props.notes[props.id - 1].pinned = !pinned;
-              // console.log(!pinned);
-              await AsyncStorage.setItem(
-                '@user_notes',
-                JSON.stringify(props.notes),
-              );
+              const notes = [...props.notes];
+              notes.reverse();
+              notes[notes.indexOf(props.item)].pinned = !pinned;
+              await AsyncStorage.setItem('@user_notes', JSON.stringify(notes));
               pinned ? Toast.show('Note Un Pinned') : Toast.show('Note Pinned');
             }}
             color="#1D1D1D"
@@ -83,6 +85,7 @@ export default Header = (props) => {
             name="delete"
             color="#1D1D1D"
             size={23}
+            onPress={() => props.modalCallback(true, true)}
             // style={{marginRight: 20}}
           />
         </View>

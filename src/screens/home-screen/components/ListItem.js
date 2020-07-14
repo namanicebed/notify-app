@@ -3,6 +3,7 @@ import {Text, View, TouchableOpacity} from 'react-native';
 import Ripple from 'react-native-material-ripple';
 import stringToHslColor from '../../../utils/stringToHslColor';
 import {useNavigation} from '@react-navigation/native';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 export default ListItem = (props) => {
   const navigation = useNavigation();
@@ -10,7 +11,12 @@ export default ListItem = (props) => {
     <Ripple
       activeOpacity={0.5}
       onPress={() =>
-        navigation.navigate('AddNote', {item: props.data, notes: props.notes})
+        props.editable
+          ? navigation.navigate('AddNote', {
+              item: props.data,
+              notes: props.notes,
+            })
+          : null
       }
       style={{
         width: '45%',
@@ -49,6 +55,16 @@ export default ListItem = (props) => {
           {props.data.date}
         </Text>
       </View>
+      {props.data.pinned ? (
+        <AntDesign
+          name="pushpino"
+          size={17}
+          color="#1D1D1D"
+          style={{position: 'absolute', top: 15, right: 15}}
+        />
+      ) : (
+        <View />
+      )}
     </Ripple>
   );
 };
