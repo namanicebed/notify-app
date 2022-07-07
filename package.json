@@ -16,7 +16,7 @@
     "@react-navigation/native": "^5.7.0",
     "@react-navigation/stack": "^5.7.0",
     "add": "^2.0.6",
-    "moment": "^2.27.0",
+    "moment": "^2.29.4",
     "react": "16.13.1",
     "react-native": "0.63.0",
     "react-native-fingerprint-scanner": "^6.0.0",
